@@ -54,6 +54,11 @@ def registration(request):
             auth.login(request, user)
 
             if session_key:
+                forgot_carts = Cart.objects.filter(user=user)
+
+                if forgot_carts.exists():
+                    forgot_carts.delete()
+
                 Cart.objects.filter(session_key=session_key).update(user=user)
 
             messages.success(request, f"{user.username}, Вы успешно зарегестрированы и вошли в аккаунт")
